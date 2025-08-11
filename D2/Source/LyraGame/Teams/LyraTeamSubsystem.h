@@ -38,6 +38,11 @@ public:
 	UPROPERTY()
 	FOnLyraTeamDisplayAssetChangedDelegate OnTeamDisplayAssetChanged;
 
+	// @D2 Start
+	UPROPERTY()
+	bool bIsNPCTeam = false;
+	// @D2 End
+
 public:
 	void SetTeamInfo(ALyraTeamInfoBase* Info);
 	void RemoveTeamInfo(ALyraTeamInfoBase* Info);
@@ -140,6 +145,14 @@ public:
 
 	// Register for a team display asset notification for the specified team ID
 	UE_API FOnLyraTeamDisplayAssetChangedDelegate& GetTeamDisplayAssetChangedDelegate(int32 TeamId);
+
+	// @D2 Start
+	UFUNCTION(BlueprintCallable, Category=Teams)
+	bool IsPartOfNPCTeam(const UObject* ActorWithTeam) const;
+
+	UFUNCTION(BlueprintCallable, Category = Teams)
+	bool IsTeamNPC(int32 TeamId) const;
+	// @D2 End
 
 private:
 	UPROPERTY()

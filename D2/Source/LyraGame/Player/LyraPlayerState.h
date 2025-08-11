@@ -183,6 +183,18 @@ private:
 
 	UFUNCTION()
 	UE_API void OnRep_MySquadID();
+
+public:
+
+	// @D2 Start
+	void RegisterToExperienceLoaded();
+	// @D2 End
+
+protected:
+	
+	// @D2 Start
+	bool bRegisteredToExperienceLoaded;
+	// @D2 End
 };
 
 #undef UE_API

@@ -73,6 +73,15 @@ void ULyraTeamCreationComponent::ServerAssignPlayersToTeams()
 	{
 		if (ALyraPlayerState* LyraPS = Cast<ALyraPlayerState>(PS))
 		{
+			// @D2 Start
+			// 만약 Team ID 가 있는 경우에는 건너뛴다.
+			const int32 TeamID = LyraPS->GetTeamId();
+			if (TeamID != INDEX_NONE)
+			{
+				continue;
+			}
+			// @D2 End
+
 			ServerChooseTeamForPlayer(LyraPS);
 		}
 	}
@@ -103,6 +112,15 @@ void ULyraTeamCreationComponent::OnPlayerInitialized(AGameModeBase* GameMode, AC
 	check(NewPlayer->PlayerState);
 	if (ALyraPlayerState* LyraPS = Cast<ALyraPlayerState>(NewPlayer->PlayerState))
 	{
+		// @D2 Start
+		// 만약 Team ID 가 있는 경우에는 건너뛴다.
+		const int32 TeamID = LyraPS->GetTeamId();
+		if (TeamID != INDEX_NONE)
+		{
+			return;
+		}
+		// @D2 End
+
 		ServerChooseTeamForPlayer(LyraPS);
 	}
 }
@@ -131,7 +149,9 @@ void ULyraTeamCreationComponent::ServerCreateTeam(int32 TeamId, ULyraTeamDisplay
 
 int32 ULyraTeamCreationComponent::GetLeastPopulatedTeamID() const
 {
-	const int32 NumTeams = TeamsToCreate.Num();
+	// @D2 Start
+	const int32 NumTeams = UseNPCTeams ? TeamsToCreate.Num() - NPCTeamIDs.Num() : TeamsToCreate.Num();
+	// @D2 End
 	if (NumTeams > 0)
 	{
 		TMap<int32, uint32> TeamMemberCounts;
@@ -140,6 +160,15 @@ int32 ULyraTeamCreationComponent::GetLeastPopulatedTeamID() const
 		for (const auto& KVP : TeamsToCreate)
 		{
 			const int32 TeamId = KVP.Key;
+
+			// @D2 Start
+			// NPCTeamID 인 경우 건너뛴다.
+			if (NPCTeamIDs.Contains(TeamId))
+			{
+				continue;
+			}
+			// @D2 End
+
 			TeamMemberCounts.Add(TeamId, 0);
 		}
 
@@ -149,6 +178,14 @@ int32 ULyraTeamCreationComponent::GetLeastPopulatedTeamID() const
 			if (ALyraPlayerState* LyraPS = Cast<ALyraPlayerState>(PS))
 			{
 				const int32 PlayerTeamID = LyraPS->GetTeamId();
+
+				// @D2 Start
+				// NPCTeamID 인 경우 건너뛴다.
+				if (NPCTeamIDs.Contains(PlayerTeamID))
+				{
+					continue;
+				}
+				// @D2 End
 
 				if ((PlayerTeamID != INDEX_NONE) && !LyraPS->IsInactive())	// do not count unassigned or disconnected players
 				{

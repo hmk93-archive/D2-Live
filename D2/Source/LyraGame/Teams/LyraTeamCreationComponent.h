@@ -46,6 +46,15 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category=Teams)
 	TSubclassOf<ALyraTeamPrivateInfo> PrivateTeamInfoClass;
 
+	// @D2 Start
+	UPROPERTY(EditDefaultsOnly, Category = Teams, meta = (InlineEditConditionToggle))
+	bool UseNPCTeams;
+
+	/** Which IDs won't be player characters. ServerAssignPlayersToTeams will ignore these indices when choosing a team for each player randomly. */
+	UPROPERTY(EditDefaultsOnly, Category = Teams, meta = (EditCondition = UseNPCTeams))
+	TArray<int8> NPCTeamIDs;
+	// @D2 End
+
 #if WITH_SERVER_CODE
 protected:
 	virtual void ServerCreateTeams();

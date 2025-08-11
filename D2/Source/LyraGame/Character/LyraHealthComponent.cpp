@@ -16,6 +16,7 @@
 #include "GameFramework/GameplayMessageSubsystem.h"
 #include "GameFramework/PlayerState.h"
 #include "Engine/World.h"
+#include "Teams/LyraTeamSubsystem.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(LyraHealthComponent)
 
@@ -166,7 +167,19 @@ void ULyraHealthComponent::HandleOutOfHealth(AActor* DamageInstigator, AActor* D
 			AbilitySystemComponent->HandleGameplayEvent(Payload.EventTag, &Payload);
 		}
 
+		// @D2 Start
+		// NPC Team 일 경우 Health 가 0이 되어도 Elimination Feed 에 노출되지 않도록 한다.
+		bool bSkipEliminationMessage = false;
+		if (ULyraTeamSubsystem* TeamSubSystem = UWorld::GetSubsystem<ULyraTeamSubsystem>(GetWorld()))
+		{
+			// 다른 플래그 설정을 대비해 |= 연산 적용
+			bSkipEliminationMessage |= TeamSubSystem->IsPartOfNPCTeam(AbilitySystemComponent->GetAvatarActor());
+		}
+		// @D2 End
+
 		// Send a standardized verb message that other systems can observe
+		// @D2 Start
+		if(bSkipEliminationMessage) // @D2 End
 		{
 			FLyraVerbMessage Message;
 			Message.Verb = TAG_Lyra_Elimination_Message;

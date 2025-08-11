@@ -31,6 +31,15 @@ void ALyraTeamPublicInfo::SetTeamDisplayAsset(TObjectPtr<ULyraTeamDisplayAsset> 
 	TryRegisterWithTeamSubsystem();
 }
 
+// @D2 Start
+void ALyraTeamPublicInfo::SetNPCTeam(bool bInIsNPCTeam)
+{
+	bIsNPCTeam = bInIsNPCTeam;
+
+	TryRegisterWithTeamSubsystem();
+}
+// @D2 End
+
 void ALyraTeamPublicInfo::OnRep_TeamDisplayAsset()
 {
 	TryRegisterWithTeamSubsystem();

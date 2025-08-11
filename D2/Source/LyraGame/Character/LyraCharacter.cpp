@@ -16,6 +16,7 @@
 #include "Player/LyraPlayerState.h"
 #include "System/LyraSignificanceManager.h"
 #include "TimerManager.h"
+#include "LyraPawnData.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(LyraCharacter)
 
@@ -214,6 +215,28 @@ void ALyraCharacter::PossessedBy(AController* NewController)
 	const FGenericTeamId OldTeamID = MyTeamID;
 
 	Super::PossessedBy(NewController);
+	
+	// @D2 Start
+	if (ALyraPlayerState* LyraPlayerState = GetLyraPlayerState())
+	{
+		if (GetWorld()->GetNetMode() < NM_Client)
+		{
+			if (const ULyraPawnData* PawnData = PawnExtComponent->GetPawnData<ULyraPawnData>())
+			{
+				// check if we already have pawn data. This will be true in the case of PlayerControllers, their PlayerState persists
+				if (!LyraPlayerState->GetPawnData<ULyraPawnData>())
+				{
+					LyraPlayerState->SetPawnData(PawnData);
+				}
+			}
+			else
+			{
+				// setup waiting for the experience to be loaded so we can use the pawn data from the experience
+				LyraPlayerState->RegisterToExperienceLoaded();
+			}
+		}
+	}
+	// @D2 End
 
 	PawnExtComponent->HandleControllerChanged();
 

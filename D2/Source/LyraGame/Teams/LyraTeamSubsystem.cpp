@@ -34,6 +34,10 @@ void FLyraTeamTrackingInfo::SetTeamInfo(ALyraTeamInfoBase* Info)
 		{
 			OnTeamDisplayAssetChanged.Broadcast(DisplayAsset);
 		}
+
+		// @D2 Start
+		bIsNPCTeam = NewPublicInfo->IsOnlyNPCTeam();
+		// @D2 End
 	}
 	else if (ALyraTeamPrivateInfo* NewPrivateInfo = Cast<ALyraTeamPrivateInfo>(Info))
 	{
@@ -402,4 +406,23 @@ FOnLyraTeamDisplayAssetChangedDelegate& ULyraTeamSubsystem::GetTeamDisplayAssetC
 {
 	return TeamMap.FindOrAdd(TeamId).OnTeamDisplayAssetChanged;
 }
+
+// @D2 Start
+bool ULyraTeamSubsystem::IsPartOfNPCTeam(const UObject* ActorWithTeam) const
+{
+	const int32 TeamId = FindTeamFromObject(Cast<const AActor>(ActorWithTeam));
+
+	return IsTeamNPC(TeamId);
+}
+
+bool ULyraTeamSubsystem::IsTeamNPC(int32 TeamId) const
+{
+	if (const FLyraTeamTrackingInfo* Entry = TeamMap.Find(TeamId))
+	{
+		return Entry->bIsNPCTeam;
+	}
+
+	return false;
+}
+// @D2 End
 

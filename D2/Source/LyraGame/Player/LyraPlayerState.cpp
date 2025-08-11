@@ -18,6 +18,7 @@
 #include "LyraPlayerController.h"
 #include "Messages/LyraVerbMessage.h"
 #include "Net/UnrealNetwork.h"
+#include "Character/LyraPawnData.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(LyraPlayerState)
 
@@ -171,16 +172,32 @@ void ALyraPlayerState::PostInitializeComponents()
 	check(AbilitySystemComponent);
 	AbilitySystemComponent->InitAbilityActorInfo(this, GetPawn());
 
+	// @D2 
+	// CallOrRegister_OnExperienceLoaded 변경
+}
+
+// @D2 Start
+void ALyraPlayerState::RegisterToExperienceLoaded()
+{
+	if (bRegisteredToExperienceLoaded)
+	{
+		return;
+	}
+
 	UWorld* World = GetWorld();
 	if (World && World->IsGameWorld() && World->GetNetMode() != NM_Client)
 	{
 		AGameStateBase* GameState = GetWorld()->GetGameState();
 		check(GameState);
+		
 		ULyraExperienceManagerComponent* ExperienceComponent = GameState->FindComponentByClass<ULyraExperienceManagerComponent>();
 		check(ExperienceComponent);
 		ExperienceComponent->CallOrRegister_OnExperienceLoaded(FOnLyraExperienceLoaded::FDelegate::CreateUObject(this, &ThisClass::OnExperienceLoaded));
 	}
+
+	bRegisteredToExperienceLoaded = true;
 }
+// @D2 End
 
 void ALyraPlayerState::SetPawnData(const ULyraPawnData* InPawnData)
 {
