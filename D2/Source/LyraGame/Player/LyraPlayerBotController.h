@@ -69,4 +69,15 @@ private:
 
 	UPROPERTY()
 	TObjectPtr<APlayerState> LastSeenPlayerState;
+
+public:
+
+	// @D2 Start
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = AI, meta = (ClampMin = "0.0", ClampMax = "1.0", UIMin = "0.0", UIMax = "1.0"))
+	float AimAccurancy = 0.4f;
+	
+	//~AAIController interface
+	virtual void UpdateControlRotation(float DeltaTime, bool bUpdatePawn) override;
+	//~End of AAIController interface
+	// @D2 End
 };

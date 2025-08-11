@@ -81,6 +81,35 @@ void ALyraPlayerBotController::OnRep_PlayerState()
 	BroadcastOnPlayerStateChanged();
 }
 
+void ALyraPlayerBotController::UpdateControlRotation(float DeltaTime, bool bUpdatePawn)
+{
+	Super::UpdateControlRotation(DeltaTime, bUpdatePawn);
+
+	// @D2 Start
+	// AimAccurancy 에 따라 Bot 의 정확도 재설정.
+	if (AimAccurancy == 1.0f)
+	{
+		return;
+	}
+
+	const FVector FocalPoint = GetFocalPoint();
+	const bool bHasTarget = FAISystem::IsValidLocation(FocalPoint);
+	if (bHasTarget == false)
+	{
+		return;
+	}
+
+	// 타켓이 존재 할 경우 AimAccurancy 에 따라 빗나갈 Control Rotation 을 설정한다.
+	if (FMath::FRand() > AimAccurancy)
+	{
+		const float MissedAngle = FMath::RandRange(5.0f, 10.0f) * (FMath::RandBool() ? -1.0f : 1.0f);
+
+		// 기존의 회전각에서 MissedAngle (5 ~ 10도) 만큼 빗나가게 설정한다.
+		SetControlRotation(ControlRotation.Vector().RotateAngleAxis(MissedAngle, FVector::UpVector).Rotation());
+	}
+	// @D2 End
+}
+
 void ALyraPlayerBotController::SetGenericTeamId(const FGenericTeamId& NewTeamID)
 {
 	UE_LOG(LogLyraTeams, Error, TEXT("You can't set the team ID on a player bot controller (%s); it's driven by the associated player state"), *GetPathNameSafe(this));
