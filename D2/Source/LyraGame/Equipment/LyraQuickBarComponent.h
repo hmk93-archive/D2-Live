@@ -30,6 +30,12 @@ public:
 	UFUNCTION(Server, Reliable, BlueprintCallable, Category="Lyra")
 	void SetActiveSlotIndex(int32 NewIndex);
 
+	// @D2 Start
+	// 현재 장착중인 무기를 장착 해제하는 함수
+	UFUNCTION(Server, Reliable, BlueprintCallable, Category="D2")
+	void UnequipActiveItem();
+	// @D2 End
+
 	UFUNCTION(BlueprintCallable, BlueprintPure=false)
 	TArray<ULyraInventoryItemInstance*> GetSlots() const
 	{
@@ -60,8 +66,12 @@ private:
 	ULyraEquipmentManagerComponent* FindEquipmentManager() const;
 
 protected:
+	// @D2 Start
+	// - 3에서 4로 변경 (Fist item index 3번째 slot 에 고정)
+	// - UI에 노출되지 않음
 	UPROPERTY()
-	int32 NumSlots = 3;
+	int32 NumSlots = 4;
+	// @D2 End
 
 	UFUNCTION()
 	void OnRep_Slots();

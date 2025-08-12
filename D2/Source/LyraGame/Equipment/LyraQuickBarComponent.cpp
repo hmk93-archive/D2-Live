@@ -146,6 +146,24 @@ void ULyraQuickBarComponent::SetActiveSlotIndex_Implementation(int32 NewIndex)
 	}
 }
 
+// @D2 Start
+void ULyraQuickBarComponent::UnequipActiveItem_Implementation()
+{
+	// 현재 장착중인 무기 Slot index 가 유효해야하고, Fist item slot 이 아닌 경우에만 동작.
+	if (Slots.IsValidIndex(ActiveSlotIndex) && ActiveSlotIndex != 3)
+	{
+		UnequipItemInSlot();
+
+		// 무기장착 해제 시 Fist Item 으로 변경한다.
+		ActiveSlotIndex = 3;
+
+		EquipItemInSlot();
+
+		OnRep_ActiveSlotIndex();
+	}
+}
+// @D2 End
+
 ULyraInventoryItemInstance* ULyraQuickBarComponent::GetActiveSlotItem() const
 {
 	return Slots.IsValidIndex(ActiveSlotIndex) ? Slots[ActiveSlotIndex] : nullptr;
