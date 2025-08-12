@@ -149,13 +149,25 @@ void ULyraQuickBarComponent::SetActiveSlotIndex_Implementation(int32 NewIndex)
 // @D2 Start
 void ULyraQuickBarComponent::UnequipActiveItem_Implementation()
 {
-	// 현재 장착중인 무기 Slot index 가 유효해야하고, Fist item slot 이 아닌 경우에만 동작.
-	if (Slots.IsValidIndex(ActiveSlotIndex) && ActiveSlotIndex != 3)
+	// 현재 장착중인 무기 Slot index 가 유효해야한다.
+	if (Slots.IsValidIndex(ActiveSlotIndex))
 	{
 		UnequipItemInSlot();
 
-		// 무기장착 해제 시 Fist Item 으로 변경한다.
-		ActiveSlotIndex = 3;
+		// Knife <-> Fist
+		if (ActiveSlotIndex == int32(ED2DefaultQuickBarItem::Knife))
+		{
+			ActiveSlotIndex = int32(ED2DefaultQuickBarItem::Fist);
+		}
+		else if (ActiveSlotIndex == int32(ED2DefaultQuickBarItem::Fist))
+		{
+			ActiveSlotIndex = int32(ED2DefaultQuickBarItem::Knife);
+		}
+		else
+		{
+			// Knife 와 Fist 가 아닌 다른 무기장착 해제 시 Knife Item 으로 변경한다.
+			ActiveSlotIndex = int32(ED2DefaultQuickBarItem::Knife);
+		}
 
 		EquipItemInSlot();
 

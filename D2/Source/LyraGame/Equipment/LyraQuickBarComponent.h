@@ -13,6 +13,21 @@ class ULyraEquipmentManagerComponent;
 class UObject;
 struct FFrame;
 
+// @D2 Start
+// EDefaultQuickBarItem
+UENUM()
+enum class ED2DefaultQuickBarItem : uint8
+{
+	Knife = 3,
+	Fist = 4,
+	Count
+};
+// @D2 End
+
+
+/*
+ *	ULyraQuickBarComponent
+ */
 UCLASS(Blueprintable, meta=(BlueprintSpawnableComponent))
 class ULyraQuickBarComponent : public UControllerComponent
 {
@@ -67,10 +82,10 @@ private:
 
 protected:
 	// @D2 Start
-	// - 3에서 4로 변경 (Fist item index 3번째 slot 에 고정)
+	// - 3에서 5로 변경 (Knife item index 3번째, Fist item index 4번째 slot 에 고정)
 	// - UI에 노출되지 않음
 	UPROPERTY()
-	int32 NumSlots = 4;
+	int32 NumSlots = (int32)ED2DefaultQuickBarItem::Count;
 	// @D2 End
 
 	UFUNCTION()
