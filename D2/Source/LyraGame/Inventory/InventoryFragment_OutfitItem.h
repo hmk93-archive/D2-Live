@@ -7,7 +7,7 @@
 #include "InventoryFragment_OutfitItem.generated.h"
 
 class UObject;
-class USkeletalMesh;
+class AActor;
 
 // @D2 Start - 옷 장비와 관련된 아이템 변경여부를 담당하는 Fragment
 UCLASS()
@@ -17,8 +17,8 @@ class UInventoryFragment_OutfitItem : public ULyraInventoryItemFragment
 
 public:
 
-	/** Skeletal Mesh Component 에 설정 될 에셋 */
+	/** Outfit 으로 Spawn 될 Actor 클래스의 메타데이터 */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Outfits)
-	TObjectPtr<USkeletalMesh> SkeletalMeshAsset;
+	TSubclassOf<AActor> OutfitClass;
 };
 // @D2 End

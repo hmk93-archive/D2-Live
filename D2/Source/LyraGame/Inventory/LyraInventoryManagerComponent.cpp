@@ -109,6 +109,9 @@ ULyraInventoryItemInstance* FLyraInventoryList::AddEntry(TSubclassOf<ULyraInvent
 
 void FLyraInventoryList::AddEntry(ULyraInventoryItemInstance* Instance)
 {
+	// @D2 Start
+	// Fragment 처리를 할 수 없어 현재 미구현 상태...
+	// @D2 End
 	unimplemented();
 }
 

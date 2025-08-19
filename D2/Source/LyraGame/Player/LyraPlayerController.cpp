@@ -24,6 +24,7 @@
 #include "ReplaySubsystem.h"
 #include "Development/LyraDeveloperSettings.h"
 #include "GameMapsSettings.h"
+#include "Cosmetics/LyraControllerComponent_CharacterParts.h"
 #if WITH_RPC_REGISTRY
 #include "Tests/LyraGameplayRpcRegistrationComponent.h"
 #include "HttpServerModule.h"
@@ -60,7 +61,7 @@ void ALyraPlayerController::PreInitializeComponents()
 void ALyraPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	#if WITH_RPC_REGISTRY
+#if WITH_RPC_REGISTRY
 	FHttpServerModule::Get().StartAllListeners();
 	int32 RpcPort = 0;
 	if (FParse::Value(FCommandLine::Get(), TEXT("rpcport="), RpcPort))
@@ -72,7 +73,7 @@ void ALyraPlayerController::BeginPlay()
 			ObjectInstance->RegisterInMatchHttpCallbacks();
 		}
 	}
-	#endif
+#endif
 	SetActorHiddenInGame(false);
 }
 
@@ -109,7 +110,7 @@ void ALyraPlayerController::PlayerTick(float DeltaTime)
 		{
 			const FRotator MovementRotation(0.0f, GetControlRotation().Yaw, 0.0f);
 			const FVector MovementDirection = MovementRotation.RotateVector(FVector::ForwardVector);
-			CurrentPawn->AddMovementInput(MovementDirection, 1.0f);	
+			CurrentPawn->AddMovementInput(MovementDirection, 1.0f);
 		}
 	}
 
@@ -368,6 +369,26 @@ bool ALyraPlayerController::ServerCheatAll_Validate(const FString& Msg)
 	return true;
 }
 
+// @D2 Start
+void ALyraPlayerController::ServerChangeCosmeticOutfit_Implementation(TSubclassOf<AActor> OriginOutfit, TSubclassOf<AActor> NewOutfit)
+{
+	if (IsValid(this) && HasAuthority())
+	{
+		if (ULyraControllerComponent_CharacterParts* CharacterParts = Cast<ULyraControllerComponent_CharacterParts>(GetComponentByClass(ULyraControllerComponent_CharacterParts::StaticClass())))
+		{
+			// OriginOutfit 을 제거
+			FLyraCharacterPart CharacterPart = {};
+			CharacterPart.PartClass = OriginOutfit;
+			CharacterParts->RemoveCharacterPart(CharacterPart);
+
+			// NewOutfit 을 추가
+			CharacterPart.PartClass = NewOutfit;
+			CharacterParts->AddCharacterPart(CharacterPart);
+		}
+	}
+}
+// @D2 End
+
 void ALyraPlayerController::PreProcessInput(const float DeltaTime, const bool bGamePaused)
 {
 	Super::PreProcessInput(DeltaTime, bGamePaused);
@@ -440,7 +461,7 @@ void ALyraPlayerController::OnStartAutoRun()
 	{
 		LyraASC->SetLooseGameplayTagCount(LyraGameplayTags::Status_AutoRunning, 1);
 		K2_OnStartAutoRun();
-	}	
+	}
 }
 
 void ALyraPlayerController::OnEndAutoRun()
@@ -466,7 +487,7 @@ void ALyraPlayerController::UpdateForceFeedback(IInputInterface* InputInterface,
 			}
 		}
 	}
-	
+
 	InputInterface->SetForceFeedbackChannelValues(ControllerId, FForceFeedbackValues());
 }
 
@@ -481,26 +502,26 @@ void ALyraPlayerController::UpdateHiddenComponents(const FVector& ViewLocation, 
 		{
 			// internal helper func to hide all the components
 			auto AddToHiddenComponents = [&OutHiddenComponents](const TInlineComponentArray<UPrimitiveComponent*>& InComponents)
-			{
-				// add every component and all attached children
-				for (UPrimitiveComponent* Comp : InComponents)
 				{
-					if (Comp->IsRegistered())
+					// add every component and all attached children
+					for (UPrimitiveComponent* Comp : InComponents)
 					{
-						OutHiddenComponents.Add(Comp->GetPrimitiveSceneId());
-
-						for (USceneComponent* AttachedChild : Comp->GetAttachChildren())
+						if (Comp->IsRegistered())
 						{
-							static FName NAME_NoParentAutoHide(TEXT("NoParentAutoHide"));
-							UPrimitiveComponent* AttachChildPC = Cast<UPrimitiveComponent>(AttachedChild);
-							if (AttachChildPC && AttachChildPC->IsRegistered() && !AttachChildPC->ComponentTags.Contains(NAME_NoParentAutoHide))
+							OutHiddenComponents.Add(Comp->GetPrimitiveSceneId());
+
+							for (USceneComponent* AttachedChild : Comp->GetAttachChildren())
 							{
-								OutHiddenComponents.Add(AttachChildPC->GetPrimitiveSceneId());
+								static FName NAME_NoParentAutoHide(TEXT("NoParentAutoHide"));
+								UPrimitiveComponent* AttachChildPC = Cast<UPrimitiveComponent>(AttachedChild);
+								if (AttachChildPC && AttachChildPC->IsRegistered() && !AttachChildPC->ComponentTags.Contains(NAME_NoParentAutoHide))
+								{
+									OutHiddenComponents.Add(AttachChildPC->GetPrimitiveSceneId());
+								}
 							}
 						}
 					}
-				}
-			};
+				};
 
 			//TODO Solve with an interface.  Gather hidden components or something.
 			//TODO Hiding isn't awesome, sometimes you want the effect of a fade out over a proximity, needs to bubble up to designers.

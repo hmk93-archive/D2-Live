@@ -45,10 +45,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category=Inventory)
 	bool HasStatTag(FGameplayTag Tag) const;
 
+	// @D2 Start - Change BlueprintCallable
+	UFUNCTION(BlueprintCallable, Category=Inventory)
 	TSubclassOf<ULyraInventoryItemDefinition> GetItemDef() const
 	{
 		return ItemDef;
 	}
+	// @D2 End
 
 	UFUNCTION(BlueprintCallable, BlueprintPure=false, meta=(DeterminesOutputType=FragmentClass))
 	const ULyraInventoryItemFragment* FindFragmentByClass(TSubclassOf<ULyraInventoryItemFragment> FragmentClass) const;

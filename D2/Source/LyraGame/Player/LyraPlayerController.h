@@ -62,6 +62,11 @@ public:
 	UFUNCTION(Reliable, Server, WithValidation)
 	UE_API void ServerCheatAll(const FString& Msg);
 
+	// @D2 Start - Cosmetic 을 UI에서 변경시키기 위해 서버로 RPC 를 호출
+	UFUNCTION(Reliable, Server, BlueprintCallable)
+	UE_API void ServerChangeCosmeticOutfit(TSubclassOf<AActor> OriginOutfit, TSubclassOf<AActor> NewOutfit);
+	// @D2 End
+
 	//~AActor interface
 	UE_API virtual void PreInitializeComponents() override;
 	UE_API virtual void BeginPlay() override;
