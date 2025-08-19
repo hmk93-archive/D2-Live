@@ -27,8 +27,10 @@ public:
 	UPROPERTY(EditAnywhere)
 	int32 StackCount = 1;
 
-	UPROPERTY(EditAnywhere)
+	// @D2 Start - BlueprintReadOnly 추가, GA_Interaction_Collect 에서 사용을 위해.
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<ULyraInventoryItemDefinition> ItemDef;
+	// @D2 End
 };
 
 USTRUCT(BlueprintType)
