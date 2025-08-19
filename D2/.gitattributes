@@ -1,1 +1,8 @@
 Content/Effects/Textures/Flipbooks/SmokeSwirl_3_Flipbook_CHANNELPACK.uasset filter=lfs diff=lfs merge=lfs -text
+Content/CitySampleCrowd/Character/Male/NormalWeight/Textures/blazer/T_m_nrw_blazer_BN.uasset filter=lfs diff=lfs merge=lfs -text
+Content/CitySampleCrowd/Character/Male/NormalWeight/Textures/slacks/T_m_nrw_slacks_BN.uasset filter=lfs diff=lfs merge=lfs -text
+Content/CitySampleCrowd/Character/Male/NormalWeight/Textures/slacks/T_m_nrw_slacks_packedA.uasset filter=lfs diff=lfs merge=lfs -text
+Content/CitySampleCrowd/Maps/HDRI_SFCorner.uasset filter=lfs diff=lfs merge=lfs -text
+Content/MetaHumans/Trey/Face/FaceNormal_MAIN_LOD.uasset filter=lfs diff=lfs merge=lfs -text
+Content/MetaHumans/Trey/Face/FaceNormal_MAIN_LOD1.uasset filter=lfs diff=lfs merge=lfs -text
+Content/CitySampleCrowd/Character/Shared/Materials/Clothing/Textures/leather/leather-sjqecg1c_Normal_VT.uasset filter=lfs diff=lfs merge=lfs -text
