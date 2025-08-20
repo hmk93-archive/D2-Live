@@ -393,6 +393,10 @@
 				"Linux",
 				"Android"
 			]
+		},
+		{
+			"Name": "AlembicHairImporter",
+			"Enabled": true
 		}
 	],
 	"EpicSampleNameHash": "451731683"
