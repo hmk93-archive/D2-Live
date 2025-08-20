@@ -27,6 +27,10 @@
 #include "GameMapsSettings.h"
 #include "Cosmetics/LyraControllerComponent_CharacterParts.h"
 #include "Character/LyraCharacter.h"
+#include "Inventory/LyraInventoryManagerComponent.h"
+#include "CommonTileView.h"
+#include "Inventory/LyraInventoryItemInstance.h"
+#include "Inventory/InventoryFragment_OutfitItem.h"
 #if WITH_RPC_REGISTRY
 #include "Tests/LyraGameplayRpcRegistrationComponent.h"
 #include "HttpServerModule.h"
@@ -371,7 +375,7 @@ bool ALyraPlayerController::ServerCheatAll_Validate(const FString& Msg)
 	return true;
 }
 
-// @D2 Start
+// @D2 Start - Client -> Server RPC: Outfit 변경을 서버에 알리는 함수 시리즈
 void ALyraPlayerController::ServerChangeCosmeticOutfit_Implementation(TSubclassOf<AActor> OriginOutfit, TSubclassOf<AActor> NewOutfit)
 {
 	if (IsValid(this) && HasAuthority())
@@ -390,7 +394,7 @@ void ALyraPlayerController::ServerChangeCosmeticOutfit_Implementation(TSubclassO
 	}
 }
 
-void ALyraPlayerController::ServerChangeCosmeticOutfitUsingTag_Implementation(FGameplayTag OutfitTag, TSubclassOf<AActor> NewOutfit)
+void ALyraPlayerController::ServerChangeCosmeticOutfitUsingTag_Implementation(FGameplayTag OutfitTag, TSubclassOf<AActor> NewOutfit, bool bFirst)
 {
 	if (ALyraCharacter* LyraCharacter = Cast<ALyraCharacter>(GetCharacter()))
 	{
@@ -407,9 +411,32 @@ void ALyraPlayerController::ServerChangeCosmeticOutfitUsingTag_Implementation(FG
 				if (bool bHasTag = GameplayTagContainer.HasTag(OutfitTag))
 				{
 					ServerChangeCosmeticOutfit_Implementation(ChildActor->GetClass(), NewOutfit);
+					
+					// 장착 된 Outfit 이 없을 경우 탈착을 위해 Default 값을 저장해둔다.
+					if (bFirst)
+					{
+						DefaultOutfits.Add(OutfitTag, ChildActor->GetClass());
+					}
+					break;
 				}
 			}
 		}
+	}
+}
+
+void ALyraPlayerController::ServerAddItemDefinition_Implementation(TSubclassOf<ULyraInventoryItemDefinition> ItemDefinition, int32 StackCount)
+{
+	if (ULyraInventoryManagerComponent* InventoryManagerComponent = GetComponentByClass<ULyraInventoryManagerComponent>())
+	{
+		InventoryManagerComponent->AddItemDefinition(ItemDefinition, StackCount);
+	}
+}
+
+void ALyraPlayerController::ServerRemoveItemInstance_Implementation(ULyraInventoryItemInstance* ItemInstance)
+{
+	if (ULyraInventoryManagerComponent* InventoryManagerComponent = GetComponentByClass<ULyraInventoryManagerComponent>())
+	{
+		InventoryManagerComponent->RemoveItemInstance(ItemInstance);
 	}
 }
 // @D2 End

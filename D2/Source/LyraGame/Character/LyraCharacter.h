@@ -178,7 +178,7 @@ protected:
 	UE_API void UninitAndDestroy();
 
 	// Called when the death sequence for the character has completed
-	UFUNCTION(BlueprintImplementableEvent, meta=(DisplayName="OnDeathFinished"))
+	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnDeathFinished"))
 	UE_API void K2_OnDeathFinished();
 
 	UE_API virtual void OnMovementModeChanged(EMovementMode PrevMovementMode, uint8 PreviousCustomMode) override;

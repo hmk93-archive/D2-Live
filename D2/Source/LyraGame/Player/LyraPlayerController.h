@@ -24,6 +24,8 @@ class ULyraSettingsShared;
 class UObject;
 class UPlayer;
 struct FFrame;
+class ULyraInventoryItemInstance;
+class ULyraInventoryItemDefinition;
 
 /**
  * ALyraPlayerController
@@ -68,7 +70,14 @@ public:
 	UE_API void ServerChangeCosmeticOutfit(TSubclassOf<AActor> OriginOutfit, TSubclassOf<AActor> NewOutfit);
 
 	UFUNCTION(Reliable, Server, BlueprintCallable)
-	UE_API void ServerChangeCosmeticOutfitUsingTag(FGameplayTag OutfitTag, TSubclassOf<AActor> NewOutfit);
+	UE_API void ServerChangeCosmeticOutfitUsingTag(FGameplayTag OutfitTag, TSubclassOf<AActor> NewOutfit, bool bFirst = false);
+
+	UFUNCTION(Reliable, Server, BlueprintCallable)
+	UE_API void ServerAddItemDefinition(TSubclassOf<ULyraInventoryItemDefinition> ItemDefinition, int32 StackCount = 1);
+
+	UFUNCTION(Reliable, Server, BlueprintCallable)
+	UE_API void ServerRemoveItemInstance(ULyraInventoryItemInstance* ItemInstance);
+
 	// @D2 End
 
 	//~AActor interface
@@ -100,7 +109,7 @@ public:
 	//~ILyraCameraAssistInterface interface
 	UE_API virtual void OnCameraPenetratingTarget() override;
 	//~End of ILyraCameraAssistInterface interface
-	
+
 	//~ILyraTeamAgentInterface interface
 	UE_API virtual void SetGenericTeamId(const FGenericTeamId& NewTeamID) override;
 	UE_API virtual FGenericTeamId GetGenericTeamId() const override;
@@ -138,17 +147,24 @@ protected:
 	//~End of APlayerController interface
 
 	UE_API void OnSettingsChanged(ULyraSettingsShared* Settings);
-	
+
 	UE_API void OnStartAutoRun();
 	UE_API void OnEndAutoRun();
 
-	UFUNCTION(BlueprintImplementableEvent, meta=(DisplayName="OnStartAutoRun"))
+	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnStartAutoRun"))
 	UE_API void K2_OnStartAutoRun();
 
-	UFUNCTION(BlueprintImplementableEvent, meta=(DisplayName="OnEndAutoRun"))
+	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnEndAutoRun"))
 	UE_API void K2_OnEndAutoRun();
 
 	bool bHideViewTargetPawnNextFrame = false;
+
+public:
+
+	// D2 Start - Outfit 장착 탈착을 위해 Default Class 를 관리한다.
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "D2|Outfit")
+	TMap<FGameplayTag, TSubclassOf<AActor>> DefaultOutfits;
+	// D2 End
 };
 
 
