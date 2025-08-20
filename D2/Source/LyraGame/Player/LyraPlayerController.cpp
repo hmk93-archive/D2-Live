@@ -9,6 +9,7 @@
 #include "Camera/LyraPlayerCameraManager.h"
 #include "UI/LyraHUD.h"
 #include "AbilitySystem/LyraAbilitySystemComponent.h"
+#include "AbilitySystem/LyraTaggedActor.h"
 #include "EngineUtils.h"
 #include "LyraGameplayTags.h"
 #include "GameFramework/Pawn.h"
@@ -25,6 +26,7 @@
 #include "Development/LyraDeveloperSettings.h"
 #include "GameMapsSettings.h"
 #include "Cosmetics/LyraControllerComponent_CharacterParts.h"
+#include "Character/LyraCharacter.h"
 #if WITH_RPC_REGISTRY
 #include "Tests/LyraGameplayRpcRegistrationComponent.h"
 #include "HttpServerModule.h"
@@ -384,6 +386,29 @@ void ALyraPlayerController::ServerChangeCosmeticOutfit_Implementation(TSubclassO
 			// NewOutfit 을 추가
 			CharacterPart.PartClass = NewOutfit;
 			CharacterParts->AddCharacterPart(CharacterPart);
+		}
+	}
+}
+
+void ALyraPlayerController::ServerChangeCosmeticOutfitUsingTag_Implementation(FGameplayTag OutfitTag, TSubclassOf<AActor> NewOutfit)
+{
+	if (ALyraCharacter* LyraCharacter = Cast<ALyraCharacter>(GetCharacter()))
+	{
+		TArray<AActor*> ChildActors;
+		LyraCharacter->GetAllChildActors(ChildActors, true);
+
+		for (AActor* ChildActor : ChildActors)
+		{
+			if (ALyraTaggedActor* TaggedActor = Cast<ALyraTaggedActor>(ChildActor))
+			{
+				FGameplayTagContainer GameplayTagContainer;
+				TaggedActor->GetOwnedGameplayTags(GameplayTagContainer);
+
+				if (bool bHasTag = GameplayTagContainer.HasTag(OutfitTag))
+				{
+					ServerChangeCosmeticOutfit_Implementation(ChildActor->GetClass(), NewOutfit);
+				}
+			}
 		}
 	}
 }

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Inventory/LyraInventoryItemDefinition.h"
+#include "GameplayTagContainer.h"
 
 #include "InventoryFragment_OutfitItem.generated.h"
 
@@ -19,6 +20,6 @@ public:
 
 	/** Outfit 으로 Spawn 될 Actor 클래스의 메타데이터 */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Outfits)
-	TSubclassOf<AActor> OutfitClass;
+	TMap<FGameplayTag, TSubclassOf<AActor>> OutfitList;
 };
 // @D2 End
