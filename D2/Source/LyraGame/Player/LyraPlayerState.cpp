@@ -172,8 +172,22 @@ void ALyraPlayerState::PostInitializeComponents()
 	check(AbilitySystemComponent);
 	AbilitySystemComponent->InitAbilityActorInfo(this, GetPawn());
 
-	// @D2 
+	// @D2 Start
 	// CallOrRegister_OnExperienceLoaded 변경
+	// @D2 End
+
+
+
+	UWorld* World = GetWorld();
+	if (World && World->IsGameWorld() && World->GetNetMode() != NM_Client)
+	{
+		AGameStateBase* GameState = GetWorld()->GetGameState();
+		check(GameState);
+
+		ULyraExperienceManagerComponent* ExperienceComponent = GameState->FindComponentByClass<ULyraExperienceManagerComponent>();
+		check(ExperienceComponent);
+		ExperienceComponent->CallOrRegister_OnExperienceLoaded(FOnLyraExperienceLoaded::FDelegate::CreateUObject(this, &ThisClass::OnExperienceLoaded));
+	}
 }
 
 // @D2 Start

@@ -44,16 +44,16 @@ ALyraGameMode::ALyraGameMode(const FObjectInitializer& ObjectInitializer)
 
 const ULyraPawnData* ALyraGameMode::GetPawnDataForController(const AController* InController) const
 {
-	// @D2 Start
-	// PlayerState 가 없는 경우 사용된다.
-	if (const ULyraPawnExtensionComponent* PawnExtComp = ULyraPawnExtensionComponent::FindPawnExtensionComponent(InController->GetPawn()))
-	{
-		if (const ULyraPawnData* PawnData = PawnExtComp->GetPawnData<ULyraPawnData>())
-		{
-			return PawnData;
-		}
-	}
-	// @D2 End
+	//// @D2 Start
+	//// PlayerState 가 없는 경우 사용된다.
+	//if (const ULyraPawnExtensionComponent* PawnExtComp = ULyraPawnExtensionComponent::FindPawnExtensionComponent(InController->GetPawn()))
+	//{
+	//	if (const ULyraPawnData* PawnData = PawnExtComp->GetPawnData<ULyraPawnData>())
+	//	{
+	//		return PawnData;
+	//	}
+	//}
+	//// @D2 End
 
 	// See if pawn data is already set on the player state
 	if (InController != nullptr)
