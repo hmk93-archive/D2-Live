@@ -6,6 +6,8 @@
 #include "Messages/LyraVerbMessage.h"
 #include "Messages/LyraVerbMessageHelpers.h"
 #include "NativeGameplayTags.h"
+#include "Teams/LyraTeamSubsystem.h"
+#include "Engine/World.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(AssistProcessor)
 
@@ -39,6 +41,16 @@ void UAssistProcessor::OnDamageMessage(FGameplayTag Channel, const FLyraVerbMess
 
 void UAssistProcessor::OnEliminationMessage(FGameplayTag Channel, const FLyraVerbMessage& Payload)
 {
+	// @D2 Start
+	if (const ULyraTeamSubsystem* TeamSubsystem = UWorld::GetSubsystem<ULyraTeamSubsystem>(GetWorld()))
+	{
+		if (TeamSubsystem->IsPartOfNPCTeam(Payload.Instigator))
+		{
+			return;
+		}
+	}
+	// @D2 End
+
 	if (APlayerState* TargetPS = Cast<APlayerState>(Payload.Target))
 	{
 		// Grant an assist to each player who damaged the target but wasn't the instigator

@@ -179,7 +179,7 @@ void ULyraHealthComponent::HandleOutOfHealth(AActor* DamageInstigator, AActor* D
 
 		// Send a standardized verb message that other systems can observe
 		// @D2 Start
-		if(bSkipEliminationMessage) // @D2 End
+		if(bSkipEliminationMessage == false) // @D2 End
 		{
 			FLyraVerbMessage Message;
 			Message.Verb = TAG_Lyra_Elimination_Message;

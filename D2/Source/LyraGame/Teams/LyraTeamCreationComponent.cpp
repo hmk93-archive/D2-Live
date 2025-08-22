@@ -140,6 +140,11 @@ void ULyraTeamCreationComponent::ServerCreateTeam(int32 TeamId, ULyraTeamDisplay
 	ALyraTeamPublicInfo* NewTeamPublicInfo = World->SpawnActor<ALyraTeamPublicInfo>(PublicTeamInfoClass, SpawnInfo);
 	checkf(NewTeamPublicInfo != nullptr, TEXT("Failed to create public team actor from class %s"), *GetPathNameSafe(*PublicTeamInfoClass));
 	NewTeamPublicInfo->SetTeamId(TeamId);
+
+	// @D2 Start
+	NewTeamPublicInfo->SetNPCTeam(NPCTeamIDs.Contains(TeamId));
+	// @D2 End
+
 	NewTeamPublicInfo->SetTeamDisplayAsset(DisplayAsset);
 
 	ALyraTeamPrivateInfo* NewTeamPrivateInfo = World->SpawnActor<ALyraTeamPrivateInfo>(PrivateTeamInfoClass, SpawnInfo);

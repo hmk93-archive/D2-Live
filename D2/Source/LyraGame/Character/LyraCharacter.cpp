@@ -216,27 +216,27 @@ void ALyraCharacter::PossessedBy(AController* NewController)
 
 	Super::PossessedBy(NewController);
 	
-	//// @D2 Start
-	//if (ALyraPlayerState* LyraPlayerState = GetLyraPlayerState())
-	//{
-	//	if (GetWorld()->GetNetMode() < NM_Client)
-	//	{
-	//		if (const ULyraPawnData* PawnData = PawnExtComponent->GetPawnData<ULyraPawnData>())
-	//		{
-	//			// check if we already have pawn data. This will be true in the case of PlayerControllers, their PlayerState persists
-	//			if (!LyraPlayerState->GetPawnData<ULyraPawnData>())
-	//			{
-	//				LyraPlayerState->SetPawnData(PawnData);
-	//			}
-	//		}
-	//		else
-	//		{
-	//			// setup waiting for the experience to be loaded so we can use the pawn data from the experience
-	//			LyraPlayerState->RegisterToExperienceLoaded();
-	//		}
-	//	}
-	//}
-	//// @D2 End
+	// @D2 Start
+	if (ALyraPlayerState* LyraPlayerState = GetLyraPlayerState())
+	{
+		if (GetWorld()->GetNetMode() < NM_Client)
+		{
+			if (const ULyraPawnData* PawnData = PawnExtComponent->GetPawnData<ULyraPawnData>())
+			{
+				// check if we already have pawn data. This will be true in the case of PlayerControllers, their PlayerState persists
+				if (!LyraPlayerState->GetPawnData<ULyraPawnData>())
+				{
+					LyraPlayerState->SetPawnData(PawnData);
+				}
+			}
+			else
+			{
+				// setup waiting for the experience to be loaded so we can use the pawn data from the experience
+				LyraPlayerState->RegisterToExperienceLoaded();
+			}
+		}
+	}
+	// @D2 End
 
 	PawnExtComponent->HandleControllerChanged();
 

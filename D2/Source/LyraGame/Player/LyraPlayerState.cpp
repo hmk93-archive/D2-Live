@@ -174,11 +174,8 @@ void ALyraPlayerState::PostInitializeComponents()
 
 	// @D2 Start
 	// CallOrRegister_OnExperienceLoaded 변경
-	// @D2 End
 
-
-
-	UWorld* World = GetWorld();
+	/*UWorld* World = GetWorld();
 	if (World && World->IsGameWorld() && World->GetNetMode() != NM_Client)
 	{
 		AGameStateBase* GameState = GetWorld()->GetGameState();
@@ -187,7 +184,9 @@ void ALyraPlayerState::PostInitializeComponents()
 		ULyraExperienceManagerComponent* ExperienceComponent = GameState->FindComponentByClass<ULyraExperienceManagerComponent>();
 		check(ExperienceComponent);
 		ExperienceComponent->CallOrRegister_OnExperienceLoaded(FOnLyraExperienceLoaded::FDelegate::CreateUObject(this, &ThisClass::OnExperienceLoaded));
-	}
+	}*/
+
+	// @D2 End
 }
 
 // @D2 Start

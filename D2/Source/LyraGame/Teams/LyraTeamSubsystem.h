@@ -148,10 +148,10 @@ public:
 
 	// @D2 Start
 	UFUNCTION(BlueprintCallable, Category=Teams)
-	bool IsPartOfNPCTeam(const UObject* ActorWithTeam) const;
+	UE_API bool IsPartOfNPCTeam(const UObject* ActorWithTeam) const;
 
 	UFUNCTION(BlueprintCallable, Category = Teams)
-	bool IsTeamNPC(int32 TeamId) const;
+	UE_API bool IsTeamNPC(int32 TeamId) const;
 	// @D2 End
 
 private:
