@@ -1,4 +1,4 @@
-Lyra Sample Game
+D2 Project, a custom project based on Lyra
 ===
 
 Content Information
