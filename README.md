@@ -1,6 +1,10 @@
 D2 Project, a custom project based on Lyra
 ===
 
+Demo Video
+----
+https://www.youtube.com/watch?v=v1CcRsCuLV4&list=PLTsjbOaBDx7KFgHuG9ZfcJ94OxGMsNZ-K
+
 Content Information
 ----
 When downloading Lyra Source code from git, the content folders are not included.
