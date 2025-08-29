@@ -1,12 +1,11 @@
-D2 Project, a custom project based on Lyra
-===
+# D2 Project, a custom project based on Lyra
 
-Demo Video
-----
-https://www.youtube.com/watch?v=v1CcRsCuLV4&list=PLTsjbOaBDx7KFgHuG9ZfcJ94OxGMsNZ-K
+## Demo Video
 
-Content Information
-----
+https://www.youtube.com/watch?v=ftSbxlRa-ag
+
+## Content Information
+
 When downloading Lyra Source code from git, the content folders are not included.
 
 To make use of the Lyra source code, you will need to download the content from the Unreal Marketplace through the Epic Games Launcher.
@@ -16,6 +15,8 @@ For more information please visit the [Unreal Engine Lyra documentation](https:/
 Once installed, copy the "Content" folder and any other folders named "Content" from the Marketplace project you downloaded to the project in your solution, and you should be good to go.
 
 
-Additional Information
-----
+
+## Additional Information
+
 See the [Unreal Engine README](../../../README.md) at the root of the repository for [Licensing](../../../README.md#licensing) and [Contributing](../../../README.md#contributions) information.
+
