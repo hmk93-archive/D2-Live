@@ -18,7 +18,10 @@ class UInventoryFragment_InventoryIcon : public ULyraInventoryItemFragment
 public:
 
 	/** InventoryFragment_QuickBarIcon 를 참고 */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Appearance)
+	FSlateBrush InventoryTileBrush;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Appearance)
-	FSlateBrush Brush;
+	FSlateBrush EquippedTileBrush;
 };
 // @D2 End
