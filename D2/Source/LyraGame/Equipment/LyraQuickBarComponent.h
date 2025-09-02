@@ -18,8 +18,7 @@ struct FFrame;
 UENUM()
 enum class ED2DefaultQuickBarItem : uint8
 {
-	Knife = 3,
-	Fist = 4,
+	Fist = 3,
 	Count
 };
 // @D2 End
@@ -81,9 +80,7 @@ private:
 	ULyraEquipmentManagerComponent* FindEquipmentManager() const;
 
 protected:
-	// @D2 Start
-	// - 3에서 5로 변경 (Knife item index 3번째, Fist item index 4번째 slot 에 고정)
-	// - UI에 노출되지 않음
+	// @D2 Start - 3번 슬롯은 Fist Item 을 위해 지정.
 	UPROPERTY()
 	int32 NumSlots = (int32)ED2DefaultQuickBarItem::Count;
 	// @D2 End

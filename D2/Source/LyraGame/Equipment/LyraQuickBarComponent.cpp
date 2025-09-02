@@ -154,20 +154,7 @@ void ULyraQuickBarComponent::UnequipActiveItem_Implementation()
 	{
 		UnequipItemInSlot();
 
-		// Knife <-> Fist
-		if (ActiveSlotIndex == int32(ED2DefaultQuickBarItem::Knife))
-		{
-			ActiveSlotIndex = int32(ED2DefaultQuickBarItem::Fist);
-		}
-		else if (ActiveSlotIndex == int32(ED2DefaultQuickBarItem::Fist))
-		{
-			ActiveSlotIndex = int32(ED2DefaultQuickBarItem::Knife);
-		}
-		else
-		{
-			// Knife 와 Fist 가 아닌 다른 무기장착 해제 시 Knife Item 으로 변경한다.
-			ActiveSlotIndex = int32(ED2DefaultQuickBarItem::Knife);
-		}
+		ActiveSlotIndex = int32(ED2DefaultQuickBarItem::Fist);
 
 		EquipItemInSlot();
 
