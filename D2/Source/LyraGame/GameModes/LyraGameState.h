@@ -97,6 +97,10 @@ protected:
 	UFUNCTION()
 	UE_API void OnRep_RecorderPlayerState();
 
+	// @D2 Start - 게임 종료 로직을 위한 GamePlayer 수
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="D2|GameState")
+	int32 NumGamePlayer;
+	// @D2 End
 };
 
 #undef UE_API
