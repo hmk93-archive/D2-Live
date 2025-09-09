@@ -127,6 +127,14 @@ void ULyraHealthSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackD
 
 	if (Data.EvaluatedData.Attribute == GetDamageAttribute())
 	{
+		// @D2 Start - Armour 값 적용
+		const int32 TopArmourMagnitude = GetTopArmour();
+		const int32 BottomArmourMagnitude = GetBottomArmour();
+		const int32 ShoesArmourMagnitude = GetShoesArmour();
+
+		const int32 ArmourMagnitude = TopArmourMagnitude + BottomArmourMagnitude + ShoesArmourMagnitude;
+		// @D2 End
+
 		// Send a standardized verb message that other systems can observe
 		if (Data.EvaluatedData.Magnitude > 0.0f)
 		{
@@ -138,14 +146,20 @@ void ULyraHealthSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackD
 			Message.TargetTags = *Data.EffectSpec.CapturedTargetTags.GetAggregatedTags();
 			//@TODO: Fill out context tags, and any non-ability-system source/instigator tags
 			//@TODO: Determine if it's an opposing team kill, self-own, team kill, etc...
-			Message.Magnitude = Data.EvaluatedData.Magnitude;
+
+			// @D2 Start - Armour 값 적용
+			Message.Magnitude = Data.EvaluatedData.Magnitude - ArmourMagnitude;
+			// @D2 End
 
 			UGameplayMessageSubsystem& MessageSystem = UGameplayMessageSubsystem::Get(GetWorld());
 			MessageSystem.BroadcastMessage(Message.Verb, Message);
 		}
 
+		// @D2 Start - Armour 값 적용
 		// Convert into -Health and then clamp
-		SetHealth(FMath::Clamp(GetHealth() - GetDamage(), MinimumHealth, GetMaxHealth()));
+		SetHealth(FMath::Clamp(GetHealth() - (GetDamage() - ArmourMagnitude), MinimumHealth, GetMaxHealth()));
+		// @D2 End
+
 		SetDamage(0.0f);
 	}
 	else if (Data.EvaluatedData.Attribute == GetHealingAttribute())

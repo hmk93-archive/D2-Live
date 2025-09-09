@@ -41,6 +41,12 @@ public:
 	ATTRIBUTE_ACCESSORS(ULyraHealthSet, MaxHealth);
 	ATTRIBUTE_ACCESSORS(ULyraHealthSet, Healing);
 	ATTRIBUTE_ACCESSORS(ULyraHealthSet, Damage);
+	
+	// @D2 Start - 방어구 장착 시 적용되는 Armour 변수
+	ATTRIBUTE_ACCESSORS(ULyraHealthSet, TopArmour);
+	ATTRIBUTE_ACCESSORS(ULyraHealthSet, BottomArmour);
+	ATTRIBUTE_ACCESSORS(ULyraHealthSet, ShoesArmour);
+	// @D2 End
 
 	// Delegate when health changes due to damage/healing, some information may be missing on the client
 	mutable FLyraAttributeEvent OnHealthChanged;
@@ -96,6 +102,17 @@ private:
 	// Incoming damage. This is mapped directly to -Health
 	UPROPERTY(BlueprintReadOnly, Category="Lyra|Health", Meta=(HideFromModifiers, AllowPrivateAccess=true))
 	FGameplayAttributeData Damage;
+
+	// @D2 Start - 방어구 장착 시 적용되는 Armour 변수
+	UPROPERTY(BlueprintReadOnly, Category="D2|Health", Meta=(AllowPrivateAccess=true))
+	FGameplayAttributeData TopArmour;
+
+	UPROPERTY(BlueprintReadOnly, Category = "D2|Health", Meta = (AllowPrivateAccess = true))
+	FGameplayAttributeData BottomArmour;
+
+	UPROPERTY(BlueprintReadOnly, Category = "D2|Health", Meta = (AllowPrivateAccess = true))
+	FGameplayAttributeData ShoesArmour;
+	// @D2 End
 };
 
 #undef UE_API

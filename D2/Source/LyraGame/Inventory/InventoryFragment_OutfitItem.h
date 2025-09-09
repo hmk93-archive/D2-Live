@@ -9,6 +9,7 @@
 
 class UObject;
 class USkeletalMesh;
+class UGameplayEffect;
 
 // @D2 Start - 옷 장비와 관련된 아이템 변경여부를 담당하는 Fragment
 UCLASS()
@@ -21,5 +22,9 @@ public:
 	/** Outfit 으로 Spawn 될 USkeletalMesh 클래스의 메타데이터 */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Outfits)
 	TMap<FGameplayTag, TObjectPtr<USkeletalMesh>> OutfitList;
+
+	/** 방어구 아이템의 아머를 담당하는 GameplayEffect */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Outfits)
+	TSubclassOf<UGameplayEffect> ArmourGameplayEffect;
 };
 // @D2 End
